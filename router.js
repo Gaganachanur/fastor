@@ -39,7 +39,7 @@ const publicSchema = new mongoose.Schema({
   });
   
   let Emp1record = mongoose.model("employee1record", emp1Schema);
- ----------------- 
+ //----------------- 
 
 // 1)API for Employee login/register.  get data from frontend check if the emp is present is there are and send responce 
 app.get("/logs", async(req, res) => {
