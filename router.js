@@ -1,8 +1,11 @@
+const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
+
+dotenv.config();
 const app = express();
   
-mongoose.connect("mongodb://127.0.0.1:27017/crm",{
+mongoose.connect(process.env.MONGO_URL,{
         useNewUrlParser: true,
         useUnifiedTopology: true   
 })
