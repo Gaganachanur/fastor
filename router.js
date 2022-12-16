@@ -13,7 +13,8 @@ mongoose.connect("mongodb://127.0.0.1:27017/crm",{
     console.log(`OH NO! MONGO CONNECTION ERROR!`);
     console.log(err);
 })
-  
+ 
+//schemas------
 const logInnSchema = new mongoose.Schema({
   name:String,
   email: String,
@@ -38,10 +39,10 @@ const publicSchema = new mongoose.Schema({
   });
   
   let Emp1record = mongoose.model("employee1record", emp1Schema);
-  
+ ----------------- 
 
+// 1)API for Employee login/register.  get data from frontend check if the emp is present is there are and send responce 
 app.get("/logs", async(req, res) => {
-
 let reqName ='jhon';
 let reqEmail = 'jhon@fastor.com';
 let reqPass = '1234';
@@ -50,28 +51,27 @@ let reqPass = '1234';
   .then((responce)=>{
     console.log(res.json(responce))
   })
-  .catch((e)=>console.log(e))
- 
+  .catch((e)=>console.log(e)) 
 });
 
+// 2) Public form API must be accessible without any authentication. get all the data of form (also which are yet be claimed by employee)
+// 4) API to fetch unclaimed leads.
 app.get("/publicinfo", async(req, res) => {
- 
        await Publicrecord.find({})
       .then((responce)=>{
         console.log(res.json(responce))
       })
-      .catch((e)=>console.log(e))
-     
+      .catch((e)=>console.log(e)) 
 });
 
-app.post('/claimleads',(req,res)=>{
-    
+// 3) API to claim leads. onclick event from front we will get which employee want to claim , 
+ // he will add it to his crm account and remove from public account 
+app.post('/claimleads',(req,res)=>{    
 let reqName ='laxmi';
 let reqEmail = 'laxmi@fastor.com';
 let reqcourceIntrest = 'telugu';
 
 const emprecord = new Emp1record({
-
     name:reqName,
     email: reqEmail,
     courceIntrest:reqcourceIntrest
@@ -79,25 +79,22 @@ const emprecord = new Emp1record({
 emprecord.save(function (err, doc) {
     console.log(doc._id);
 });
-
+//delet from public 
 Publicrecord.deleteMany({ name: reqName }).then(function(){
     console.log("Data deleted"); // Success
 }).catch(function(error){
     console.log(error); // Failure
 });
 res.json('data added succesfully')
-
 })
 
-
+//5) API to fetch leads claimed by logged in users. get the data of employee who has log in and info from his crmdatabase form claimed by him
 app.get("/getemp1rec", async(req, res) => {
- 
     await Emp1record.find({})
    .then((responce)=>{
      console.log(res.json(responce))
    })
-   .catch((e)=>console.log(e))
-  
+   .catch((e)=>console.log(e))  
 });
 
   
